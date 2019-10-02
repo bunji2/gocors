@@ -1,2 +1,2 @@
 # gocors
-Sample of CORS with GoLang
+Sample of CORS using GoLang
