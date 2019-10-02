@@ -2,7 +2,7 @@
 // Usage: sample.exe
 // Web API:
 // INPUT: {"x":INTVALUE, "y":INTVALUE}
-// OUTPUT: {"status":statuscode("OK" or "NG"), "value":Icalc(x, y), "message":"reason of error"}
+// OUTPUT: {"status":statuscode("OK" or "NG"), "value":calc(x, y), "message":"reason of error"}
 
 package main
 
