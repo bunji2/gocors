@@ -1,7 +1,8 @@
-﻿// GoLang による CORS 対応 Web API の実装例
+// Sample of CORS using GoLang
 // Usage: sample.exe
-// Web API への入力: {"x":整数,"y":整数}
-// Web API の出力: {"status":ステータスコード("OK" or "NG"),"value":計算結果の整数,"message":エラー理由}
+// Web API:
+// INPUT: {"x":INTVALUE, "y":INTVALUE}
+// OUTPUT: {"status":statuscode("OK" or "NG"), "value":Icalc(x, y), "message":"reason of error"}
 
 package main
 
@@ -17,8 +18,6 @@ import (
 const (
 	// 使用するポート番号
 	port = ":8080"
-	// 使用する静的コンテンツのパス
-	htdocsDir = "htdocs"
 )
 
 // Param : クライアントから受信するパラメータの型
@@ -70,10 +69,10 @@ func handlerAPI(w http.ResponseWriter, r *http.Request) {
 
 // checkOrigin : Originヘッダをチェックする
 func checkOrigin(r *http.Request) bool {
-	// Origin をチェックしない場合の例
-	return true
+	// Origin の有無のみチェックする場合の例
+	return r.Header.Get("Origin")!=""
 
-	// Origin をチェックする場合の例
+	// Origin の値をチェックする場合の例
 	//return r.Header.Get("Origin") == "http://example.jp:8080"
 }
 
@@ -99,7 +98,7 @@ func processPOST(w http.ResponseWriter, r *http.Request) {
 	// パラメータの取得に成功したとき
 	if err == nil {
 		// calc の計算結果を返信データに設定
-		retData = RetData{Status: "OK", Value: calc(param)}
+		retData = RetData{Status: "OK", Value: calc(param.x, param.y)}
 	} else {
 		// 失敗理由を返信データに設定
 		retData.Message = err.Error()
@@ -111,8 +110,8 @@ func processPOST(w http.ResponseWriter, r *http.Request) {
 }
 
 // calc : 与えられたパラメータで計算を行う関数
-func calc(param Param) (r int) {
-	r = param.X + param.Y // 計算例
+func calc(x, y int) (r int) {
+	r = x + y // 計算例
 	return
 }
 
