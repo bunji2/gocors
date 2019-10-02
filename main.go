@@ -36,11 +36,7 @@ type RetData struct {
 
 func main() {
 	fmt.Println(VERSION)
-	// virtual host #1
-	http.Handle("example.jp/", http.FileServer(http.Dir(htdocsDir)))
-
-	// virtual host #2
-	http.HandleFunc("aaa.jp/api", handlerAPI)
+	http.HandleFunc("/api", handlerAPI)
 	http.ListenAndServe(port, nil)
 }
 
