@@ -1,3 +1,3 @@
 package main 
 const 
-VERSION = "0.1e"
+VERSION = "0.1f"
