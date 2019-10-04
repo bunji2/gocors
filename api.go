@@ -36,8 +36,7 @@ func handlerAPI(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// JSON 形式でクライアントに返信
-	retBytes, _ := json.Marshal(retData)
-	fmt.Fprintf(w, `%s`, string(retBytes))
+	fmt.Fprintf(w, `%s`, retData.String())
 }
 
 // calc : 与えられたパラメータで計算を行う関数

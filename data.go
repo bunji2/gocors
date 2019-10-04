@@ -2,6 +2,8 @@
 
 package main
 
+import "encoding/json"
+
 // Param : クライアントから受信するパラメータの型
 type Param struct {
 	X int `json:"x"`
@@ -19,4 +21,12 @@ type RetData struct {
 func NewRetData() (r RetData) {
 	r = RetData{Status: "NG"}
 	return
+}
+
+func (rd RetData) String() string {
+	bytes, err := json.Marshal(rd)
+	if err != nil {
+		return `{status:"NG"}`
+	}
+	return string(bytes)
 }
