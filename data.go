@@ -2,7 +2,10 @@
 
 package main
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"fmt"
+)
 
 // Param : クライアントから受信するパラメータの型
 type Param struct {
@@ -26,7 +29,7 @@ func NewRetData() (r RetData) {
 func (rd RetData) String() string {
 	bytes, err := json.Marshal(rd)
 	if err != nil {
-		return `{status:"NG"}`
+		return fmt.Sprintf(`{status:"NG", message:"%s"}`, err.Error())
 	}
 	return string(bytes)
 }

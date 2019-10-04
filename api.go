@@ -35,6 +35,8 @@ func handlerAPI(w http.ResponseWriter, r *http.Request) {
 		retData.Message = err.Error()
 	}
 
+	w.Header().Set("Content-Type", "application/json")
+
 	// JSON 形式でクライアントに返信
 	fmt.Fprintf(w, `%s`, retData.String())
 }
@@ -47,6 +49,13 @@ func calc(x, y int) (r int) {
 
 // getParam : リクエストからパラメータを取得する関数
 func getParam(r *http.Request) (param Param, err error) {
+
+	// コンテンツタイプが application/json でないときのエラー
+	if r.Header.Get("Content-Type") != "application/json" {
+		err = fmt.Errorf("content-type is not application/json")
+		return
+	}
+
 	param = Param{}
 
 	var clen int
