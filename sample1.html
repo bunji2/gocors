@@ -1,0 +1,36 @@
+<html>
+<head><title>Sample of CORS</title></head>
+<body>
+<form id="form">
+    <input type="text" name="x" value="1234"> + 
+    <input type="text" name="y" value="5432">
+    <input type="button" value="calc" onclick=call_api()>
+    <br>
+    ==> <input type="text" name="ret" value="0">
+</form>
+<script>
+function call_api() {
+    var f = document.getElementById("form");
+    var x = parseInt(f.x.value, 10);
+    var y = parseInt(f.y.value, 10);
+    data = JSON.stringify({x:x, y:y});
+    
+    var req = new XMLHttpRequest();
+    req.open('POST', 'http://aaa.jp:8080/api');
+    req.setRequestHeader('Content-Type', 'application/json');
+    req.onreadystatechange = function () {
+        if (req.readyState == 4 && req.status == 200) {
+            // alert(req.responseText); // for debug.
+            ret = JSON.parse(req.responseText);
+            if (ret.status == "OK") {
+                f.ret.value = ret.value;
+            } else {
+                f.ret.value = "NaN";
+            }
+        }
+    };
+    req.send(data);
+}
+</script>
+</body>
+</html>
