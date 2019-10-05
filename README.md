@@ -1,20 +1,20 @@
 # gocors --- CORS (Cross-Origin Resource Sharing) の GoLang によるサンプル
 
-あるコンテンツから "XMLHttpRequest" から WebAPI にアクセスすることを考える。
+あるコンテンツが "XMLHttpRequest" を用いて WebAPI へのアクセスを成功させるには "Same-Origin Policy" が満たされる必要がある。つまり次のようなシーケンスである。
 
 ![fig0](images/fig0.png)
 
-これは "Same-Origin Policy" の場合に成立する。つまり最初のコンテンツと、WebAPI が同じ生成元の場合である。
+つまり最初のコンテンツと、WebAPI が同じ生成元の場合である。
 
-で、例えばこの WebAPI が有用で別のオリジンのコンテンツからも使えるようにすることを考える。
+この WebAPI を別のオリジンのコンテンツからも使いたいケースがあるが、同一でないオリジンではないためブラウザによりブロックされてしまう。
 
-通常は同一でないオリジンで WebAPI にアクセスしようとするとブラウザにブロックされてしまう。その際にブラウザのコンソールには次のようなメッセージが表示される。
+その際にブラウザのコンソールには次のようなメッセージが表示される。
 
 ```
 Access to XMLHttpRequest at 'http://aaa.jp:8080/api' from origin 'http://example.jp:8080' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
 ```
 
-オリジンが 'example.jp' でここから XMLHttpRequest で 'aaa.jp' の WebAPI にアクセスする前に、"preflight request" のレスポンスが "CORS policy" を満たさずブロックされてしまう。
+オリジンが 'example.jp' でここから XMLHttpRequest で 'aaa.jp' の WebAPI にアクセスする前に、"preflight request" のレスポンスが "CORS policy" を満たさずブロックされてしまう。この場合のシーケンスを以下に示す。
 
 ![fig1](images/fig1.png)
 
