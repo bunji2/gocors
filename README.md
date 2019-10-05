@@ -114,10 +114,10 @@ func processPreFlightRequest(w http.ResponseWriter, r *http.Request) {
 
 ```
 
-ポイントは以下の二点である。
+"handlerAPIWithCORS" 関数は "handlerAPI" 関数をラップする。重要なポイントは以下の二点である。
 
-* "processPreFlightRequest" 関数により、"preflight request" に対してオリジンを許可するレスポンスを返す。
+* "OPTIONS" メソッドの場合 "processPreFlightRequest" 関数により、"preflight request" に対してオリジンを許可するレスポンスを返す。
 
-* "handlerAPIWithCORS" 関数により　"handlerAPI" をラップし、オリジンを許可するレスポンスを追加する。
+* "handlerAPI" 関数のレスポンスにオリジンを許可するヘッダを追加する。
 
 ![fig2](images/fig2.png)
