@@ -14,7 +14,7 @@ func handlerAPIWithCORS(w http.ResponseWriter, r *http.Request) {
 	dumpRequest(r)
 
 	// Originヘッダのチェック
-	if !checkOrigin(r) {
+	if !IsAllowableOrigin(r) {
 		// Originを許容できない場合は 403 を返す
 		w.WriteHeader(http.StatusForbidden)
 		return
@@ -64,8 +64,8 @@ func processPreFlightRequest(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Max-Age", "86400")
 }
 
-// checkOrigin : Originヘッダをチェックする関数
-func checkOrigin(r *http.Request) bool {
+// IsAllowableOrigin : Originヘッダをチェックする関数
+func IsAllowableOrigin(r *http.Request) bool {
 	origin := r.Header.Get("Origin")
 
 	// Origin ヘッダの有無のみチェックする例

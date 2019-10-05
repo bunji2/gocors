@@ -23,7 +23,7 @@ func handlerAPI(w http.ResponseWriter, r *http.Request) {
 	retData := NewRetData()
 
 	// JSON形式のパラメータを取得
-	param, err := getParam(r)
+	param, err := getParamFromJSON(r)
 
 	// パラメータの取得に成功したとき
 	if err == nil {
@@ -47,8 +47,8 @@ func calc(x, y int) (r int) {
 	return
 }
 
-// getParam : リクエストからパラメータを取得する関数
-func getParam(r *http.Request) (param Param, err error) {
+// getParamFromJSON : リクエストからJSON形式のパラメータを取得する関数
+func getParamFromJSON(r *http.Request) (param Param, err error) {
 
 	// コンテンツタイプが application/json でないときのエラー
 	if r.Header.Get("Content-Type") != "application/json" {

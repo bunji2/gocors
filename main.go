@@ -25,7 +25,7 @@ func main() {
 	http.Handle("/", http.FileServer(http.Dir(htdocsDir)))
 
 	// API 用
-	// http.HandleFunc("aaa.jp/api", handlerAPI)
+	//http.HandleFunc("aaa.jp/api", handlerAPI)
 	http.HandleFunc("aaa.jp/api", handlerAPIWithCORS)
 
 	// サーバ起動
