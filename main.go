@@ -29,5 +29,6 @@ func main() {
 	http.HandleFunc("aaa.jp/api", handlerAPIWithCORS)
 
 	// サーバ起動
-	http.ListenAndServe(port, nil)
+	//http.ListenAndServe(port, nil)
+	http.ListenAndServe(port, DefaultHeaders{Handler: http.DefaultServeMux})
 }

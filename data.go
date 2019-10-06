@@ -26,7 +26,8 @@ func NewRetData() (r RetData) {
 	return
 }
 
-func (rd RetData) String() string {
+// JSONString : JSON形式の文字列を生成
+func (rd RetData) JSONString() string {
 	bytes, err := json.Marshal(rd)
 	if err != nil {
 		return fmt.Sprintf(`{status:"NG", message:"%s"}`, err.Error())

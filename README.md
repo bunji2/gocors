@@ -1,42 +1,8 @@
 # gocors --- CORS (Cross-Origin Resource Sharing) の GoLang によるサンプル
 
-あるコンテンツが "XMLHttpRequest" を用いて WebAPI へのアクセスを成功させるには "Same-Origin Policy" が満たされる必要がある。つまり次のようなシーケンスである。
+あるコンテンツが "XMLHttpRequest" を用いて JSON データを入出力とするような WebAPI へのアクセスを考える。
 
-![fig0](images/fig0.png)
-
-最初のコンテンツと、WebAPI が同じオリジンの場合である。
-
-この WebAPI を別のオリジンのコンテンツからも使いたいケースがあるが、同じオリジンではないためブラウザによりブロックされてしまう。
-
-その際にブラウザのコンソールには次のようなメッセージが表示される。
-
-```
-Access to XMLHttpRequest at 'http://aaa.jp:8080/api' from origin 'http://example.jp:8080' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
-```
-
-オリジンが 'example.jp' でここから XMLHttpRequest で 'aaa.jp' の WebAPI にアクセスする前に、"preflight request" のレスポンスが "CORS policy" を満たさずブロックされてしまう。この場合のシーケンスを以下に示す。
-
-![fig1](images/fig1.png)
-
-ここでクロスオリジンな状況でも 'aaa.jp' が WebAPI を提供するには "OPTIONS" メソッドからなる "preflight request" に対してオリジンを許可するレスポンスを返す必要があり、具体的には以下のレスポンスヘッダを追加しなければならない。
-
-|レスポンスヘッダ|概要|
-|:--|:--|
-|Access-Control-Allow-Origin|アクセスを許容するオリジン|
-|Access-Control-Allow-Methods|アクセスを許容するメソッド群|
-|Access-Control-Allow-Headers|アクセスを許容するヘッダ群|
-
-以下に例を示す。
-
-```
-Access-Control-Allow-Origin: http://example.jp:8080
-Access-Control-Allow-Methods: POST, OPTIONS
-Access-Control-Allow-Headers: Content-Type
-```
-
-"Access-Control-Allow-Methods" で "OPTIONS" メソッドを追加している。また、WebAPI で使う "POST" メソッドで入力データのコンテンツタイプに JSON データを想定しているため、"Access-Control-Allow-Headers" で "Content-Type" を指定する。
-
-まず、用意する WebAPI を示す。想定として JSON 形式のデータを入力として受け取り、結果を JSON 形式で返答するものとする。
+GoLang では次の handlerAPI 関数のような実装を検討するはずだ。
 
 ```
 func main() {
@@ -71,7 +37,43 @@ func handlerAPI(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
-通常、同一オリジンで使用する WebAPI ならば上記のように "POST" メソッドのみ実装すればよいが、クロスオリジンで使用するには "preflight request" に応答できなければならない。以下に "preflight request" への対応例を示す。
+この実装は "Same-Origin Policy" の条件を前提としている。
+
+![fig0](images/fig0.png)
+
+この WebAPI を別のオリジンのコンテンツからも使う場合には、"Same-Origin Policy" を満たせずブラウザによりブロックされてしまう。
+
+その際に例えば Chrome では次のようなメッセージがコンソールに表示される。
+
+```
+Access to XMLHttpRequest at 'http://aaa.jp:8080/api' from origin 'http://example.jp:8080' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+```
+
+オリジンが 'example.jp' でここから XMLHttpRequest で 'aaa.jp' の WebAPI にアクセスする前に、"preflight request" が要求される。しかしそのレスポンスが "CORS policy" を満たさずブロックされてしまう。
+
+![fig1](images/fig1.png)
+
+クロスオリジンな状況でも WebAPI を提供できるようにするには、ブラウザが要求する "preflight request" に対してオリジンを許可するレスポンスを返す必要がある。
+
+必要なレスポンスヘッダを以下に示す。
+
+|レスポンスヘッダ|概要|
+|:--|:--|
+|Access-Control-Allow-Origin|アクセスを許容するオリジン|
+|Access-Control-Allow-Methods|アクセスを許容するメソッド群|
+|Access-Control-Allow-Headers|アクセスを許容するヘッダ群|
+
+以下にレスポンスヘッダの例を示す。
+
+```
+Access-Control-Allow-Origin: http://example.jp:8080
+Access-Control-Allow-Methods: POST, OPTIONS
+Access-Control-Allow-Headers: Content-Type
+```
+
+"Access-Control-Allow-Methods" で WebAPI 用の "POST" メソッドと "preflight request" 用の "OPTIONS" メソッドを追加している。また、WebAPI の入力データのコンテンツタイプに JSON データを想定しているため、"Access-Control-Allow-Headers" で "Content-Type" を指定する。
+
+通常、同一オリジンで使用する WebAPI ならば上記のように "POST" メソッドのみ実装すればよいが、クロスオリジンで使用するには "preflight request" に応答できなければならない。以下に "preflight request" への対応するため先の実装を修正する。
 
 ```
 func main() {
