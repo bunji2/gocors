@@ -71,7 +71,7 @@ Access-Control-Allow-Methods: POST, OPTIONS
 Access-Control-Allow-Headers: Content-Type
 ```
 
-"Access-Control-Allow-Methods" で WebAPI 用の "POST" メソッドと "preflight request" 用の "OPTIONS" メソッドを追加している。また、WebAPI の入力データのコンテンツタイプに JSON データを想定しているため、"Access-Control-Allow-Headers" で "Content-Type" を指定する。
+"Access-Control-Allow-Methods" で WebAPI 用の "POST" メソッドと "preflight request" 用の "OPTIONS" メソッドを追加している。また、WebAPI の入力データのコンテンツタイプ用に "Access-Control-Allow-Headers" で "Content-Type" を指定する。
 
 通常、同一オリジンで使用する WebAPI ならば上記のように "POST" メソッドのみ実装すればよいが、クロスオリジンで使用するには "preflight request" に応答できなければならない。以下に "preflight request" への対応するため先の実装を修正する。
 
