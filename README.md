@@ -1,6 +1,6 @@
 # gocors --- CORS (Cross-Origin Resource Sharing) の GoLang によるサンプル
 
-あるコンテンツが "XMLHttpRequest" を用いて JSON データを入出力とするような WebAPI へのアクセスを考える。
+あるコンテンツが "XMLHttpRequest" を用いて WebAPI に対して JSON データを入出力としたアクセスすることを考える。
 
 GoLang では次の handlerAPI 関数のような実装を検討するはずだ。
 
