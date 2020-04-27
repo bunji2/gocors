@@ -61,22 +61,25 @@ func processPreFlightRequest(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Max-Age", "86400")
 }
 
-// IsAllowableOrigin : Originヘッダをチェックする関数
+// IsAllowableOrigin : Originヘッダをチェックする関数。
+// 許容できる Origin であれば true を返す。
 func IsAllowableOrigin(r *http.Request) bool {
 	origin := r.Header.Get("Origin")
 
-	// Origin ヘッダの有無のみチェックする例
-	// つまり、任意の Origin を許容する場合
-	return origin != ""
+	// Origin ヘッダがないときは false を返す。
+	if origin == "" {
+		return false
+	}
+	
+	// 所定の Origin のみ許容する場合
+	return origin == "http://example.jp:8080"
 
+	// お勧めしないが任意の Origin を許容する場合は一切確認することなく true を返せばよい。
+	// return true
+	
 	// [XXX] 上は同一オリジンでも Origin ヘッダが付与される前提。
 	// Chrome ではそのように動作することを確認したが、他のブラウザは未確認。
-	// 場合によっては Origin ヘッダがないときのことも想定すべきかもしれない。
 
-	/*
-		// 所定の Origin のみ許容する例
-		return origin == "http://example.jp:8080"
-	*/
 }
 
 // dumpRequest : 受信したリクエストのダンプ
